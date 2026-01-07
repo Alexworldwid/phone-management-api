@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title><%= category.name %></title>
+    </head>
+
+    <body>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/phones">Phones</a>
+            <a href="/categories">Categories</a>
+        </nav>
+        <section>
+            <h1><%= category.name %></h1>
+            <h2>Phones in this category:</h2>
+
+            <ul>
+            <% if (phones.length === 0) { %>
+                <li>No phones found in this category.</li>
+            <% } else { %>
+                <% phones.forEach(phone => { %>
+                <li>
+                    <strong><%= phone.model_name %></strong>
+                    – Released in <%= phone.release_year %>
+                    – $<%= phone.price %>
+                </li>
+                <% }) %>
+            <% } %>
+            </ul>
+        </section>
+    </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>create a phone</title>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/categories">categories</a>
+    </nav>
+    <section>
+        <h1>Fill the form and submit to create your phone</h1>
+
+        <form action="/phones/createPhone" method="post" style="max-width: 400px; width: 100%; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <label for="model_name">Model Name</label>
+                <input type="text" name="model_name" id="model_name">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <label for="release_year">Release Year</label>
+                <input type="text" name="release_year" id="release_year">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <label for="price">Price</label>
+                <input type="text" name="price" id="price">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <label for="category_id">category:</label>
+                <select name="category_id">
+                    <% categories.forEach((category) => { %>)
+                        <option value="<%= category.id %>"><%= category.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <button type="button" onclick="openCreateModal()" style="padding: 8px 0; border-radius: 8px; cursor: pointer;">Create Phone</button>
+
+            <div
+                id="createModal"
+                style="
+                    display: none;
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0,0,0,0.4);
+                    align-items: center;
+                    justify-content: center;
+                "
+                >
+                <div
+                    id="createForm"
+                    style="
+                        background: white;
+                        padding: 20px;
+                        border-radius: 8px;
+                        width: 300px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                    "
+                >
+                    <h3 id="updateModalTitle" style="margin: 0;">enter Admin password to create a new phone</h3>
+
+                    <input
+                        type="password"
+                        name="adminPassword"
+                        id="adminPassword"
+                        placeholder="Admin password"
+                        required
+                    />
+
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button type="button" onclick="closeCreateModal()">Cancel</button>
+                        <button type="submit" style="background: #dc2626; color: white;">
+                            create
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <% if (locals.errors) { %>
+                <ul>
+                    <% errors.forEach(function(error) { %>
+                    <li><%= error.msg %></li>
+                    <% }); %>
+                </ul>
+        <% } %>
+    </section>
+
+    <script>
+         // update functions
+        function openCreateModal(categoryId) {
+            const modal = document.getElementById("createModal");
+            modal.style.display = "flex";
+        }
+
+        function closeCreateModal() { 
+            document.getElementById("createModal").style.display = "none";
+        }
+ 
+        document.getElementById("createModal").addEventListener("click", e => {
+            if (e.target.id === "createModal") {
+                closeCreateModal()
+            }
+        })
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create category form</title>
+</head>
+<body>
+    <form action="/categories/create" method="post">
+        <label for="name">
+            Name
+        </label>
+        <input type="text" id="name" name="name">
+        <button type="submit">Create Category</button>
+    </form>
+    <% if (locals.errors) {%>
+        <ul>
+            <% errors.forEach(function(error) { %>
+            <li><%= error.msg %></li>
+            <% }); %>
+        </ul>
+    <% } %>
+</body>
+</html>

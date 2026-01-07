@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone List</title>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/categories">categories</a>
+    </nav>
+    <section>
+        <h1>Phone List</h1>
+
+        <ul style="max-width: 500px; ">
+            <% phones.forEach((phone) => { %>
+                <a href="/phones/<%= phone.id %>" style="text-decoration: none; width: 100%; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: small; color: black;">
+                    <li style="display: flex; flex-direction: column; align-items: flex-start; padding: 8px; border-radius: 12px; max-width: 200px; justify-content: space-between; margin-bottom: 20px; box-shadow: 2px 2px 2px black; background-color: bisque;">
+                       <p> name: <%= phone.model_name%></p>
+                       <p>price: <%= phone.price %></p>
+                       <p>category: <%= phone.category_name %></p>
+                       <p>created at: <%= phone.created_at %></p>
+                        <button type="submit" style="width: 100%; cursor: pointer; margin-bottom: 4px;">
+                            <a href="/phones/updatePhone/<%= phone.id %>">Edit</a>
+                        </button>
+                       <button type="button" style="display: flex; cursor: pointer; background-color: #dc2626; width: 100%; text-align: end; align-items: center; justify-content: center;"  onclick="openDeleteModal('<%= phone.id %>')">
+                            delete
+                        </button>
+                    </li>
+                </a>
+            <% }); %>
+        </ul>
+        <button style="padding: 2px 0; border-radius: 4px; cursor: pointer; width: 100%; max-width: 200px; border: 1px solid black; color: black; text-align: center;">
+            <a href="/phones/createPhone" style="text-decoration: none;">
+                Create Phone
+            </a>
+        </button>
+    </section>
+
+    <div
+        id="deleteModal"
+        style="
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            align-items: center;
+            justify-content: center;
+        "
+        >
+        <form
+            id="deleteForm"
+            method="POST"
+            style="
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            "
+        >
+            <h3 id="modalTitle" style="margin: 0;">Confirm delete</h3>
+
+            <input
+            type="password"
+            name="adminPassword"
+            placeholder="Admin password"
+            required
+            />
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button type="button" onclick="closeDeleteModal()">Cancel</button>
+            <button type="submit" style="background: #dc2626; color: white;">
+                Delete
+            </button>
+            </div>
+        </form>
+    </div>
+
+    <% if (locals.errors) { %>
+            <ul>
+                <% errors.forEach(function(error) { %>
+                <li><%= error.msg %></li>
+                <% }); %>
+            </ul>
+    <% } %>
+
+</body>
+
+    <script>
+        // delete functions
+        function openDeleteModal(phoneId) {
+            const modal = document.getElementById("deleteModal");
+            const form = document.getElementById("deleteForm");
+            form.action = `/phones/delete/${phoneId}`;
+            modal.style.display = "flex";
+        }
+
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none";
+        }
+
+        document.getElementById("deleteModal").addEventListener("click", e => {
+            if (e.target.id === "deleteModal") {
+                closeDeleteModal();
+            }
+        });
+
+
+       
+    </script>
+</html>

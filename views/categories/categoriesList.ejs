@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <title>
+            Categories List
+        </title>
+    </head>
+    <body>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/phones">Phones</a>
+        </nav>
+        <section>
+            <p>categories list</p>
+            <ul style="max-width: 500px; ">
+                <% categories.forEach(function(category) { %>
+                    <li style="display: flex; align-items: center; max-width: 400px; justify-content: space-between; margin-bottom: 20px;">
+                        <a href="/categories/<%= category.id %>">
+                            <%= category.name %>
+                        </a>
+                        <div style="display: flex; flex-direction: row; gap: 20px; align-items: center;">
+                            <button type="button" style="display: flex;">
+                                <a href="/categories/update/<%= category.id %>">update</a>
+                            </button>
+                            
+                            <button type="button" style="display: flex;" onclick="openDeleteModal('<%= category.id %>')">
+                                delete
+                            </button>
+                        </div>
+                    </li>
+                <% }); %>
+            </ul>
+            <% if (typeof error !== "undefined" && error) { %>
+                <p style="color: red;"><%= error %></p>
+            <% } %>
+            <button>
+                <a href="/categories/create" style="cursor: pointer; text-decoration: none;">
+                    create category
+                </a>
+            </button>
+        </div>
+
+        <div
+            id="deleteModal"
+            style="
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.4);
+                align-items: center;
+                justify-content: center;
+            "
+            >
+            <form
+                id="deleteForm"
+                method="POST"
+                style="
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                width: 300px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                "
+            >
+                <h3 id="modalTitle" style="margin: 0;">Confirm delete</h3>
+
+                <input
+                type="password"
+                name="adminPassword"
+                placeholder="Admin password"
+                required
+                />
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" onclick="closeDeleteModal()">Cancel</button>
+                <button type="submit" style="background: #dc2626; color: white;">
+                    Delete
+                </button>
+                </div>
+            </form>
+        </div>
+
+    </body>
+
+    <script>
+        // delete functions
+        function openDeleteModal(categoryId) {
+            const modal = document.getElementById("deleteModal");
+            const form = document.getElementById("deleteForm");
+            form.action = `/categories/delete/${categoryId}`;
+            modal.style.display = "flex";
+        }
+
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none";
+        }
+
+        document.getElementById("deleteModal").addEventListener("click", e => {
+            if (e.target.id === "deleteModal") {
+                closeDeleteModal();
+            }
+        });
+
+
+       
+    </script>
+</html>
